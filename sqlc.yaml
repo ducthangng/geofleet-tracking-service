@@ -1,0 +1,11 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "app/database/queries.sql" # Where your SQL queries are
+    schema: "app/database/tracking.sql" # Where your CREATE TABLE statements are
+    gen:
+      go:
+        package: "postgresql"       # The package name for generated code
+        out: "app/internal/interface/postgresql"           # Output directory
+        sql_package: "pgx/v5" # CRITICAL: Use pgx native types
+        emit_interface: true

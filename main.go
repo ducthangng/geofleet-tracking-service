@@ -11,9 +11,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 
-	"github.com/ducthangng/GeoFleet/app/handler"
 	"github.com/ducthangng/GeoFleet/singleton"
-	tracking_v1 "github.com/ducthangng/geofleet-proto/gen/go/tracking/v1"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 )
@@ -23,7 +21,7 @@ func main() {
 	centralConfig := singleton.GetGlobalConfig()
 
 	singleton.GetRedisClient()
-	singleton.GetKafkaReader()
+	singleton.InitilizeKafkaReader()
 
 	// 1. Mở port TCP
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%s", centralConfig.Host, centralConfig.Port))
@@ -34,10 +32,8 @@ func main() {
 	// 2. Khởi tạo gRPC Server
 	server := grpc.NewServer()
 
-	trackingHandler := handler.NewTrackingHandler()
-
-	// register the services
-	tracking_v1.RegisterTrackingServiceServer(server, trackingHandler)
+	// trackingHandler := handler.NewTrackingHandler()
+	// tracking_v1.RegisterTrackingServiceServer(server, trackingHandler)
 
 	// 4. Xử lý Graceful Shutdown (Hủy đăng ký khi tắt app)
 	go func() {

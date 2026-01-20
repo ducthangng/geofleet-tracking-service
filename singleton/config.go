@@ -40,6 +40,20 @@ type GatewayGlobalConfig struct {
 	// Observability & Environment
 	Environment string `mapstructure:"ENV"`
 	LogLevel    string `mapstructure:"LOG_LEVEL"`
+
+	// Database
+	Type            string `mapstructure:"TYPE"`
+	User            string `mapstructure:"DB_USER"`
+	Password        string `mapstructure:"PASSWORD"`
+	DatabaseHost    string `mapstructure:"HOST"`
+	Name            string `mapstructure:"NAME"`
+	DatabasePort    string `mapstructure:"PORT"`
+	SSLMode         string `mapstructure:"SSL_MODE"`
+	CACERTBASE64    string `mapstructure:"CACERT_BASE64"`
+	MaxIdleConns    int    `mapstructure:"MAX_IDLE_CONNS"`
+	MaxOpenConns    int    `mapstructure:"MAX_OPEN_CONNS"`
+	MaxConnLifeTime int    `mapstructure:"MAX_CONN_LIFE_TIME"`
+	MaxConnIdleTime int    `mapstructure:"MAX_CONN_IDLE_TIME"`
 }
 
 var GlobalConfig *GatewayGlobalConfig
