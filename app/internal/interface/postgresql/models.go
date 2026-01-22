@@ -5,21 +5,39 @@
 package postgresql
 
 import (
+	"github.com/ducthangng/GeoFleet/app/internal/domain/entity"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type TrackingServiceCoordinate struct {
 	ID         int64
-	UserID     pgtype.UUID
-	Coordinate interface{}
+	UserID     uuid.UUID
+	Coordinate entity.Point
+	CreatedAt  pgtype.Timestamptz
+}
+
+type TrackingServiceCoordinatePartition20260121 struct {
+	ID         int64
+	UserID     uuid.UUID
+	Coordinate entity.Point
 	CreatedAt  pgtype.Timestamptz
 }
 
 type TrackingServiceRideCoordinate struct {
 	ID         int64
-	RideID     pgtype.UUID
-	UserID     pgtype.UUID
-	Coordinate interface{}
+	RideID     uuid.UUID
+	UserID     uuid.UUID
+	Coordinate entity.Point
+	Velocity   pgtype.Float8
+	CreatedAt  pgtype.Timestamptz
+}
+
+type TrackingServiceRideCoordinatePartition20260121 struct {
+	ID         int64
+	RideID     uuid.UUID
+	UserID     uuid.UUID
+	Coordinate entity.Point
 	Velocity   pgtype.Float8
 	CreatedAt  pgtype.Timestamptz
 }

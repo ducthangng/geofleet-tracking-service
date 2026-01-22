@@ -30,8 +30,9 @@ func GetConn() *DBConnection {
 	return PGconn
 }
 
-func ConnectPostgre(ctx context.Context) {
+func ConnectPostgre(ctx context.Context) *DBConnection {
 	PGonce.Do(func() {
+		log.Println("connecting to postgres...")
 		for {
 			PGconn = &DBConnection{}
 
@@ -45,6 +46,9 @@ func ConnectPostgre(ctx context.Context) {
 			}
 		}
 	})
+
+	Conn := GetConn()
+	return Conn
 }
 
 func (db *DBConnection) Connect(ctx context.Context) error {
@@ -52,6 +56,8 @@ func (db *DBConnection) Connect(ctx context.Context) error {
 
 	connectionString := fmt.Sprintf(`postgres://%s:%s@%s:%s/%s`,
 		dbCfg.User, dbCfg.Password, dbCfg.DatabaseHost, dbCfg.DatabasePort, dbCfg.Name)
+
+	log.Println("connection string: ", connectionString)
 
 	// 2. Add Pooling Parameters to the Query String
 	// We use url.Values to safely encode these parameters

@@ -3,8 +3,12 @@ module github.com/ducthangng/GeoFleet
 go 1.25.4
 
 require (
+	github.com/bytedance/sonic v1.14.2
 	github.com/ducthangng/geofleet-proto v0.0.0-20260112030734-8e17ccf263cd
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/google/uuid v1.6.0
+	github.com/google/wire v0.7.0
+	github.com/jackc/pgx/v5 v5.8.0
 	github.com/mbobakov/grpc-consul-resolver v1.5.3
 	github.com/segmentio/kafka-go v0.4.49
 	github.com/spf13/viper v1.21.0
@@ -15,7 +19,6 @@ require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20251209175733-2a1774d88802.1 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/bytedance/gopkg v0.1.3 // indirect
-	github.com/bytedance/sonic v1.14.2 // indirect
 	github.com/bytedance/sonic/loader v0.4.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
@@ -34,7 +37,6 @@ require (
 	github.com/hashicorp/serf v0.10.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
-	github.com/jackc/pgx/v5 v5.8.0 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/klauspost/compress v1.15.9 // indirect

@@ -1,6 +1,7 @@
 package singleton
 
 import (
+	"log"
 	"sync"
 	"time"
 
@@ -18,13 +19,17 @@ func InitilizeKafkaReader() *kafka.Reader {
 		brokers := GetGlobalConfig().KafkaBrokers
 		kafkaReader = kafka.NewReader(kafka.ReaderConfig{
 			Brokers:  brokers,
-			GroupID:  "tracking-service-v1", // fix for Kafka cache
-			MinBytes: 10e3,                  // 10KB
-			MaxBytes: 10e6,                  // 10MB
+			GroupID:  "tracking-service-v2026", // fix for Kafka cache
+			Topic:    "ride_tracking.raw_coordinate",
+			MinBytes: 1,    // 1 byte is good. Higher throughput, then change this param
+			MaxBytes: 10e6, // 10MB
 			// Reader should be able to auto commit
 			CommitInterval: time.Second,
 		})
 	})
+
+	log.Println("connect to kafka reader successfully")
+
 	return kafkaReader
 }
 

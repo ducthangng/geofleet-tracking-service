@@ -1,5 +1,7 @@
 PROTO_DIR = proto/user
 OUT_DIR = pb/user
+BINARY=main
+.DEFAULT_GOAL := run
 
 consul:
 	docker run -d --name consul-dev -p 8500:8500 -p 8600:8600/udp consul:1.15.4
@@ -17,6 +19,10 @@ clean-proto:
 update-proto:
 	GOPROXY=direct go get github.com/ducthangng/geofleet-proto@latest
 	go mod tidy
+
+dev:
+	go build app/cmd/main.go
+	./${BINARY}
 
 
 .PHONY: consul update-proto

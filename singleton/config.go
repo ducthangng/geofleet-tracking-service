@@ -45,9 +45,9 @@ type GatewayGlobalConfig struct {
 	Type            string `mapstructure:"TYPE"`
 	User            string `mapstructure:"DB_USER"`
 	Password        string `mapstructure:"PASSWORD"`
-	DatabaseHost    string `mapstructure:"HOST"`
+	DatabaseHost    string `mapstructure:"DBHOST"`
 	Name            string `mapstructure:"NAME"`
-	DatabasePort    string `mapstructure:"PORT"`
+	DatabasePort    string `mapstructure:"DBPORT"`
 	SSLMode         string `mapstructure:"SSL_MODE"`
 	CACERTBASE64    string `mapstructure:"CACERT_BASE64"`
 	MaxIdleConns    int    `mapstructure:"MAX_IDLE_CONNS"`
@@ -65,7 +65,7 @@ func InitializeConfig() {
 
 	viper.AddConfigPath("./")
 	viper.SetConfigType("env")
-	viper.SetConfigName("gateway.env")
+	viper.SetConfigName("tracking.env")
 	viper.AutomaticEnv()
 
 	// Find and read the config file

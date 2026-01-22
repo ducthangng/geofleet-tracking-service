@@ -1,7 +1,7 @@
 version: "2"
 sql:
   - engine: "postgresql"
-    queries: "app/database/queries.sql" # Where your SQL queries are
+    queries: "app/database/tracking_queries.sql" # Where your SQL queries are
     schema: "app/database/tracking.sql" # Where your CREATE TABLE statements are
     gen:
       go:
@@ -9,3 +9,10 @@ sql:
         out: "app/internal/interface/postgresql"           # Output directory
         sql_package: "pgx/v5" # CRITICAL: Use pgx native types
         emit_interface: true
+
+        overrides:
+          - db_type: "uuid"
+            go_type: "github.com/google/uuid.UUID"
+
+          - db_type: "geography"
+            go_type: "github.com/ducthangng/GeoFleet/app/internal/domain/entity.Point"

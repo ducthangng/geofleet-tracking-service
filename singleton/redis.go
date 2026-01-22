@@ -3,6 +3,7 @@ package singleton
 import (
 	"context"
 	"fmt"
+	"log"
 	"sync"
 	"time"
 
@@ -15,9 +16,7 @@ var (
 )
 
 // GetRedisClient returns a singleton instance of the Redis Client
-func GetRedisClient() (*redis.Client, error) {
-	var err error
-
+func GetRedisClient() *redis.Client {
 	redisOnce.Do(func() {
 		// 1. Initialize the client
 		cfg := GetGlobalConfig()
@@ -33,12 +32,13 @@ func GetRedisClient() (*redis.Client, error) {
 		defer cancel()
 
 		if _, pingErr := client.Ping(ctx).Result(); pingErr != nil {
-			err = fmt.Errorf("failed to connect to redis: %v", pingErr)
+			err := fmt.Errorf("failed to connect to redis: %v", pingErr)
+			log.Fatal(err)
 			return
 		}
 
 		redisClient = client
 	})
 
-	return redisClient, err
+	return redisClient
 }

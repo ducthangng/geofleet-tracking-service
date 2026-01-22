@@ -7,15 +7,16 @@ package postgresql
 import (
 	"context"
 
-	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/google/uuid"
 )
 
 type Querier interface {
-	GetCoordinateByUser(ctx context.Context, userID pgtype.UUID) ([]TrackingServiceCoordinate, error)
-	GetCoordinateInRide(ctx context.Context, rideID pgtype.UUID) ([]TrackingServiceRideCoordinate, error)
+	// cast to bytea so that GO knows it must be []byte
+	GetCoordinateByUser(ctx context.Context, userID uuid.UUID) ([]GetCoordinateByUserRow, error)
+	GetCoordinateInRide(ctx context.Context, rideID uuid.UUID) ([]TrackingServiceRideCoordinate, error)
 	GetCoordinateInRideByUser(ctx context.Context, arg GetCoordinateInRideByUserParams) ([]TrackingServiceRideCoordinate, error)
-	InsertCoordinate(ctx context.Context, arg InsertCoordinateParams) (TrackingServiceCoordinate, error)
-	InsertRideCoordinate(ctx context.Context, arg InsertRideCoordinateParams) (TrackingServiceRideCoordinate, error)
+	InsertCoordinate(ctx context.Context, arg InsertCoordinateParams) (InsertCoordinateRow, error)
+	InsertRideCoordinate(ctx context.Context, arg InsertRideCoordinateParams) (InsertRideCoordinateRow, error)
 }
 
 var _ Querier = (*Queries)(nil)
