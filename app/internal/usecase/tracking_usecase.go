@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"log"
 
 	"github.com/ducthangng/GeoFleet/app/internal/domain/entity"
 	"github.com/ducthangng/GeoFleet/app/internal/interface/postgresql"
@@ -23,17 +22,12 @@ func NewTrackingService(service *postgresql.Queries, client *redis.Client) *Trac
 	}
 }
 
-func (service *TrackingService) UploadLocationHistory(ctx context.Context, data usecase_dto.DriverLocationEvent) (err error) {
+func (service *TrackingService) UploadLocationHistory(ctx context.Context, data usecase_dto.DriverLocationEvent) (insertedId int64, err error) {
 	// check if user currently in ride
 	rideId := service.RedisService.Get(ctx, data.UserID.String()).Val()
-	log.Println("DEBUG: rideId = ", rideId)
 
 	rideUUID, err := cast.CastUUID(rideId)
-	log.Println("DEBUG: uuid = ", rideId, "-- err: ", err)
-
-	// invalid ride
 	if len(rideId) == 0 || err != nil {
-		log.Println("DEBUG: err != nil")
 		// currently not in ride
 		coordinate := postgresql.InsertCoordinateParams{
 			UserID:    data.UserID,
@@ -43,16 +37,10 @@ func (service *TrackingService) UploadLocationHistory(ctx context.Context, data 
 
 		res, err := service.DataService.InsertCoordinate(ctx, coordinate)
 		if err != nil {
-			log.Println("DEBUG: insert: ", err)
-			return err
+			return insertedId, err
 		}
 
-		if res.ID == 0 {
-			log.Println("DEBUG: resID = 0")
-		}
-
-		log.Println("DEBUG: resID = ", res.ID)
-		return nil
+		return res.ID, nil
 	}
 
 	coordinate := postgresql.InsertRideCoordinateParams{
@@ -66,14 +54,8 @@ func (service *TrackingService) UploadLocationHistory(ctx context.Context, data 
 
 	res, err := service.DataService.InsertRideCoordinate(ctx, coordinate)
 	if err != nil {
-		log.Println("DEBUG: insert ride: ", err)
-		return err
+		return insertedId, err
 	}
 
-	if res.ID == 0 {
-		log.Println("DEBUG: UploadLocationHistory resID = 0")
-	}
-
-	log.Println("DEBUG: resID ride = ", res.ID)
-	return nil
+	return res.ID, err
 }

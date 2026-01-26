@@ -4,7 +4,7 @@ go 1.25.4
 
 require (
 	github.com/bytedance/sonic v1.14.2
-	github.com/ducthangng/geofleet-proto v0.0.0-20260112030734-8e17ccf263cd
+	github.com/ducthangng/geofleet-proto v0.0.0-20260124063825-457a51ee0538
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.7.0
