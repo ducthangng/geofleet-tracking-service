@@ -7,5 +7,5 @@ import (
 )
 
 type TrackingUsecaseService interface {
-	UploadLocationHistory(context.Context, usecase_dto.DriverLocationEvent) error
+	UploadLocationHistory(ctx context.Context, data usecase_dto.DriverLocationEvent) (insertedId int64, err error)
 }
