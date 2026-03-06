@@ -1,6 +1,13 @@
 package usecase_dto
 
-import "github.com/google/uuid"
+import (
+	"time"
+
+	"github.com/google/uuid"
+
+	identity_v1 "github.com/ducthangng/geofleet-proto/gen/go/identity/v1"
+	ride_v1 "github.com/ducthangng/geofleet-proto/gen/go/ride/v1"
+)
 
 /*
  Tiêu chuẩn RFC mới là cái "Universal" (phổ quát).
@@ -16,9 +23,11 @@ import "github.com/google/uuid"
 */
 
 type DriverLocationEvent struct {
-	UserID    uuid.UUID `json:"user_id"`
-	Lat       float64   `json:"lat"`
-	Lng       float64   `json:"lng"`
-	Timestamp int64     `json:"timestamp"`
-	Geohash   string    `json:"geohash"`
+	UserID     uuid.UUID            `json:"userId"`
+	UserRole   identity_v1.UserRole `json:"userRole"`
+	RideStatus ride_v1.RideStatus   `json:"rideStatus"`
+	Lat        float64              `json:"lat"`
+	Lng        float64              `json:"lng"`
+	Timestamp  time.Time            `json:"timestamp"`
+	Geohash    string               `json:"geohash"`
 }

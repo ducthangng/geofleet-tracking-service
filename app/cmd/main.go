@@ -17,6 +17,8 @@ import (
 	"github.com/ducthangng/GeoFleet/singleton"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
+
+	tracking_v1 "github.com/ducthangng/geofleet-proto/gen/go/tracking/v1"
 )
 
 func main() {
@@ -34,6 +36,13 @@ func main() {
 
 	// 2. Khởi tạo gRPC Server
 	server := grpc.NewServer()
+
+	trackingHandler, err := registry.BuildTrackingHandler(ctx)
+	if err != nil {
+		log.Fatalf("tracking handler returns error: ", err)
+	}
+
+	tracking_v1.RegisterTrackingServiceServer(server, trackingHandler)
 
 	// 4. Xử lý Graceful Shutdown (Hủy đăng ký khi tắt app)
 	go func() {
@@ -64,7 +73,6 @@ func main() {
 		var errDB error
 		// var
 		for {
-
 			if errDB = dbConn.DB.Ping(ctx); err == nil {
 				healthServer.SetServingStatus("geofleet.tracking.v1", healthpb.HealthCheckResponse_SERVING)
 			} else {

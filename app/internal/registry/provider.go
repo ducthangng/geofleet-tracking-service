@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/ducthangng/GeoFleet/app/handler"
 	"github.com/ducthangng/GeoFleet/app/internal/infrastructure"
 	"github.com/ducthangng/GeoFleet/app/internal/interface/postgresql"
 	"github.com/ducthangng/GeoFleet/app/internal/usecase"
@@ -32,15 +33,21 @@ func ProvideRedis(ctx context.Context) *redis.Client {
 	return singleton.GetRedisClient()
 }
 
-// ProvideUserUsecase provides the usecase struct
-func ProvideUserUsecase(querier *postgresql.Queries, redis *redis.Client) *usecase.TrackingService {
-	return usecase.NewTrackingService(querier, redis)
+// ProvideTrackingUsecase provides the usecase struct
+func ProvideTrackingUsecase(querier *postgresql.Queries) *usecase.TrackingService {
+	return usecase.NewTrackingService(querier)
 }
 
-// ProvideUserUsecase provides the usecase struct
+// ProvideKafkaReader provides the usecase struct
 func ProvideKafkaReader(ctx context.Context) *kafka.Reader {
 	kafkaReader := singleton.InitilizeKafkaReader()
 	return kafkaReader
+}
+
+func ProvideTrackingHandlerSet(ctx context.Context, usecase usecase.TrackingUsecaseService) *handler.TrackingHandler {
+	handler := handler.NewTrackingHandler(usecase)
+
+	return handler
 }
 
 // ProviderSet groups these together (Optional, but clean)
@@ -48,8 +55,18 @@ var KafkaListenerSet = wire.NewSet(
 	ProvideDBPool,
 	ProvideRepository,
 	ProvideRedis,
-	ProvideUserUsecase,
+	ProvideTrackingUsecase,
 	wire.Bind(new(usecase.TrackingUsecaseService), new(*usecase.TrackingService)),
 	ProvideKafkaReader,
+	infrastructure.NewKafkaConsumer,
+)
+
+var TrackingHandlerSet = wire.NewSet(
+	ProvideDBPool,
+	ProvideRepository,
+	ProvideRedis,
+	ProvideTrackingUsecase,
+	wire.Bind(new(usecase.TrackingUsecaseService), new(*usecase.TrackingService)),
+	ProvideTrackingHandlerSet,
 	infrastructure.NewKafkaConsumer,
 )

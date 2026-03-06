@@ -8,7 +8,7 @@ package registry
 
 import (
 	"context"
-
+	"github.com/ducthangng/GeoFleet/app/handler"
 	"github.com/ducthangng/GeoFleet/app/internal/infrastructure"
 )
 
@@ -20,9 +20,19 @@ func BuildKafkaListener(ctx context.Context) (*infrastructure.KafkaConsumer, err
 		return nil, err
 	}
 	queries := ProvideRepository(pool)
-	client := ProvideRedis(ctx)
-	trackingService := ProvideUserUsecase(queries, client)
+	trackingService := ProvideTrackingUsecase(queries)
 	reader := ProvideKafkaReader(ctx)
 	kafkaConsumer := infrastructure.NewKafkaConsumer(trackingService, reader)
 	return kafkaConsumer, nil
+}
+
+func BuildTrackingHandler(ctx context.Context) (*handler.TrackingHandler, error) {
+	pool, err := ProvideDBPool(ctx)
+	if err != nil {
+		return nil, err
+	}
+	queries := ProvideRepository(pool)
+	trackingService := ProvideTrackingUsecase(queries)
+	trackingHandler := ProvideTrackingHandlerSet(ctx, trackingService)
+	return trackingHandler, nil
 }

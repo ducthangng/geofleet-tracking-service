@@ -4,7 +4,7 @@ go 1.25.4
 
 require (
 	github.com/bytedance/sonic v1.14.2
-	github.com/ducthangng/geofleet-proto v0.0.0-20260127031556-bc7f0dd5c426
+	github.com/ducthangng/geofleet-proto v0.0.0-20260305065935-97820c3b5fdd
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.7.0
@@ -13,6 +13,7 @@ require (
 	github.com/segmentio/kafka-go v0.4.49
 	github.com/spf13/viper v1.21.0
 	google.golang.org/grpc v1.78.0
+	google.golang.org/protobuf v1.36.11
 )
 
 require (
@@ -62,5 +63,4 @@ require (
 	golang.org/x/sys v0.38.0 // indirect
 	golang.org/x/text v0.32.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251222181119-0a764e51fe1b // indirect
-	google.golang.org/protobuf v1.36.11 // indirect
 )
